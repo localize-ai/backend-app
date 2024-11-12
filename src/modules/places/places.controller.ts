@@ -63,8 +63,6 @@ export class PlacesController {
   }
 
   @Get(':id/reviews')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiTags('places/reviews')
   async getReviews(
     @Param('id') id: string
@@ -73,8 +71,6 @@ export class PlacesController {
   }
 
   @Get(':id')
-  @UseGuards(JwtAuthGuard)
-  @ApiBearerAuth()
   @ApiTags('places')
   async getPlace(
     @Param('id') id: string

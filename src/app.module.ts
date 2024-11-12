@@ -24,7 +24,7 @@ import { redisStore } from 'cache-manager-redis-yet';
           socket: {
             tls: true,
             rejectUnauthorized: false,
-          }
+          },
         });
 
         return {
