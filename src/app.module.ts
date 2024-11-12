@@ -4,7 +4,7 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StoragesModule } from './modules/storages/storages.module';
 import { PlacesModule } from './modules/places/places.module';
-import { CacheModule } from '@nestjs/cache-manager';
+import { CacheModule, CacheStore } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
@@ -16,12 +16,22 @@ import { redisStore } from 'cache-manager-redis-yet';
         return connection;
       },
     }),
-    CacheModule.register({
+    CacheModule.registerAsync({
       isGlobal: true,
-      store: redisStore,
-      host: process.env.REDIS_HOST,
-      port: process.env.REDIS_PORT,
-      no_ready_check: true,
+      useFactory: async () => {
+        const store = await redisStore({
+          url: process.env.REDIS_URL,
+          socket: {
+            tls: true,
+            rejectUnauthorized: false,
+          }
+        });
+
+        return {
+          store: store as unknown as CacheStore,
+          ttl: 24 * 60 * 60000,
+        };
+      },
     }),
 
     UsersModule,
