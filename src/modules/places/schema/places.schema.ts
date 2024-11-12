@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose, { HydratedDocument } from 'mongoose';
+import { HydratedDocument } from 'mongoose';
+import { PlaceReviews } from './place_reviews.schema';
 
 export type PlacesDocument = HydratedDocument<Places>;
 
@@ -9,6 +10,8 @@ export type PlacesDocument = HydratedDocument<Places>;
         updatedAt: 'updated_at',
     },
     versionKey: false,
+    collection: 'places',
+    virtuals: true,
 })
 export class Places {
     /**
@@ -41,3 +44,11 @@ export class Places {
 }
 
 export const PlacesSchema = SchemaFactory.createForClass(Places);
+
+PlacesSchema.virtual('reviews', {
+    ref: PlaceReviews.name,
+    localField: '_id',
+    foreignField: 'place_id',
+});
+PlacesSchema.set('toJSON', { virtuals: true })
+PlacesSchema.set('toObject', { virtuals: true })
