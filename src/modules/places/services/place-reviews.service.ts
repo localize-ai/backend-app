@@ -17,7 +17,7 @@ export class PlaceReviewsService {
         dto: CreatePlaceReviewsDto
     ) {
         return this.placeReviews.create({
-            user_id: userId,
+            user: userId,
             place_id: placeId,
             rating: dto.rating,
             review: dto.review,
@@ -28,6 +28,7 @@ export class PlaceReviewsService {
     async getReviews(placeId: string) {
         return this.placeReviews
             .find({ place_id: placeId })
-            .sort({ created_at: -1 });
+            .sort({ created_at: -1 })
+            .populate('user', 'name email username');
     }
 }
