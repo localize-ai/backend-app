@@ -3,7 +3,7 @@ import * as admin from 'firebase-admin';
 import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { LoginDto } from './dto/auth-login.dto';
-import { UserDocument } from '../users/schema/user.schema';
+import { UsersDocument } from '../users/schema/users.schema';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class AuthService {
         }
     }
 
-    async signToken(user: UserDocument) {
+    async signToken(user: UsersDocument) {
         return await this.jwtService.signAsync({
             sub: {
                 id: user.id,
