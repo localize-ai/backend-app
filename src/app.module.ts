@@ -21,6 +21,7 @@ import { redisStore } from 'cache-manager-redis-yet';
       useFactory: async () => {
         const store = await redisStore({
           ttl: 24 * 60 * 60000,
+          pingInterval: 3000,
           username: process.env.REDIS_USERNAME,
           password: process.env.REDIS_PASSWORD,
           socket: {
@@ -28,6 +29,12 @@ import { redisStore } from 'cache-manager-redis-yet';
             port: parseInt(process.env.REDIS_PORT),
             tls: true,
             rejectUnauthorized: false,
+            reconnectStrategy(retries, cause) {
+              if (retries > 10) {
+                return new Error('Redis connection lost');
+              }
+              return Math.min(retries * 50, 500);
+            },
           },
         });
 
