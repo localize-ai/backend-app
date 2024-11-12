@@ -30,6 +30,8 @@ import { redisStore } from 'cache-manager-redis-yet';
             tls: true,
             rejectUnauthorized: false,
             reconnectStrategy(retries, cause) {
+              console.log(`Redis connection lost. Attempt ${retries}: `, cause);
+
               if (retries > 10) {
                 return new Error('Redis connection lost');
               }
