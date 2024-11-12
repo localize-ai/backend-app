@@ -1,12 +1,20 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Places } from './schema/places.schema';
+import { Model } from 'mongoose';
 
 @Injectable()
 export class PlacesService {
 
     constructor(
         private readonly httpService: HttpService,
+        @InjectModel(Places.name) private readonly model: Model<Places>,
     ) { }
+
+    async getPlace(id: string) {
+        return this.model.findOne({ _id: id });
+    }
 
     async getExplores() {
         const promises = await Promise.all([
