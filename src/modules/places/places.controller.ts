@@ -8,10 +8,7 @@ import { CreatePlaceReviewsDto } from './dto/create.place-reviews.dto';
 import { CreatePlaceRequestsDto } from './dto/create.place-requests.dto';
 import { PlaceRequestsService } from './services/place-requests.service';
 
-@Controller({
-  path: 'places',
-  version: '1',
-})
+@Controller('places')
 export class PlacesController {
 
   constructor(
