@@ -26,7 +26,18 @@ export class PlacesService {
         };
     }
 
-    private getPlaces(category: string) {
-        return this.httpService.get(`https://llm.localizeai.laam.my.id/v1/places?q=Coffee%20Shop&category=${category}`).toPromise();
+    private async getPlaces(category: string) {
+        const maxRetries = 3;
+        let attempts = 0;
+        while (attempts < maxRetries) {
+            try {
+                return await this.httpService.get(`https://llm.localizeai.online/v1/places?q=Coffee%20Shop&category=${category}`).toPromise();
+            } catch (error) {
+                attempts++;
+                if (attempts >= maxRetries) {
+                    throw new Error(`Failed to fetch places for category ${category} after ${maxRetries} attempts`);
+                }
+            }
+        }
     }
 }
