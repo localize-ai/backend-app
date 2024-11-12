@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
+import { Users } from 'src/modules/users/schema/users.schema';
 
 export type PlaceRequestsDocument = HydratedDocument<PlaceRequests>;
 
@@ -18,9 +19,9 @@ export class PlaceRequests {
 
     @Prop({
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'users',
+        ref: Users.name,
     })
-    user_id?: string;
+    user?: string;
 
     @Prop({
         enum: ['pending', 'approved', 'rejected'],
