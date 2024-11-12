@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
 import { PlacesService } from './services/places.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
@@ -7,6 +7,7 @@ import { PlaceReviewsService } from './services/place-reviews.service';
 import { CreatePlaceReviewsDto } from './dto/create.place-reviews.dto';
 import { CreatePlaceRequestsDto } from './dto/create.place-requests.dto';
 import { PlaceRequestsService } from './services/place-requests.service';
+import { GetPlacesCategoryDto } from './dto/get.places.dto';
 
 @Controller('places')
 export class PlacesController {
@@ -16,6 +17,14 @@ export class PlacesController {
     private readonly placeReviewsService: PlaceReviewsService,
     private readonly placeRequestsService: PlaceRequestsService,
   ) { }
+
+  @Get()
+  @ApiTags('places')
+  async getPlaceByCategory(
+    @Query() dto: GetPlacesCategoryDto,
+  ) {
+    return this.placesService.getPlaceByCategory(new GetPlacesCategoryDto(dto));
+  }
 
   @Get('explores')
   @CacheKey('explores-places')

@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Places } from '../schema/places.schema';
 import { Model } from 'mongoose';
+import { GetPlacesCategoryDto } from '../dto/get.places.dto';
+import { PlaceEnum } from '../enum/place.enum';
 
 @Injectable()
 export class PlacesService {
@@ -16,13 +18,18 @@ export class PlacesService {
         return this.model.findOne({ _id: id });
     }
 
+    async getPlaceByCategory(dto: GetPlacesCategoryDto) {
+        const result = await this.getPlaces(dto.category, 20);
+        return result.data;
+    }
+
     async getExplores() {
         const promises = await Promise.all([
-            this.getPlaces('hidden_gem'),
-            this.getPlaces('work_friendly'),
-            this.getPlaces('cozy_atmosphere'),
-            this.getPlaces('pet_friendly'),
-            this.getPlaces('classic_vibes'),
+            this.getPlaces(PlaceEnum.HIDDEN_GEM),
+            this.getPlaces(PlaceEnum.WORK_FRIENDLY),
+            this.getPlaces(PlaceEnum.COZY_ATMOSPHERE),
+            this.getPlaces(PlaceEnum.PET_FRIENDLY),
+            this.getPlaces(PlaceEnum.CLASSIC_VIBES),
         ]);
 
         return {
@@ -34,12 +41,15 @@ export class PlacesService {
         };
     }
 
-    private async getPlaces(category: string) {
+    private async getPlaces(
+        category: string,
+        limit: number = 10,
+    ) {
         const maxRetries = 3;
         let attempts = 0;
         while (attempts < maxRetries) {
             try {
-                return await this.httpService.get(`https://llm.localizeai.online/v1/places?q=Coffee%20Shop&category=${category}`).toPromise();
+                return await this.httpService.get(`https://llm.localizeai.online/v1/places?q=Coffee%20Shop&limit=${limit}&category=${category}`).toPromise();
             } catch (error) {
                 attempts++;
                 if (attempts >= maxRetries) {
