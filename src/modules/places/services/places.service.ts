@@ -1,7 +1,7 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Places } from './schema/places.schema';
+import { Places } from '../schema/places.schema';
 import { Model } from 'mongoose';
 
 @Injectable()
