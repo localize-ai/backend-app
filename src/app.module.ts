@@ -33,9 +33,6 @@ import { redisStore } from 'cache-manager-redis-yet';
         };
       },
     }),
-    // CacheModule.register({
-    //   isGlobal: true,
-    // }),
     UsersModule,
     AuthModule,
     StoragesModule,
