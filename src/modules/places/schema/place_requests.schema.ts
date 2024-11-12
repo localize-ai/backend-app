@@ -9,7 +9,7 @@ export type PlaceRequestsDocument = HydratedDocument<PlaceRequests>;
         updatedAt: 'updated_at',
     },
     versionKey: false,
-    collection: 'place_reviews',
+    collection: 'place_requests',
 })
 export class PlaceRequests {
 
