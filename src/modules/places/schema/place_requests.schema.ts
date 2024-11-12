@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 
-export type PlaceReviewsDocument = HydratedDocument<PlaceReviews>;
+export type PlaceRequestsDocument = HydratedDocument<PlaceRequests>;
 
 @Schema({
     timestamps: {
@@ -11,25 +11,21 @@ export type PlaceReviewsDocument = HydratedDocument<PlaceReviews>;
     versionKey: false,
     collection: 'place_reviews',
 })
-export class PlaceReviews {
-
-    @Prop({ isRequired: true })
-    place_id: mongoose.Types.ObjectId;
-
-    @Prop({ isRequired: true })
-    rating: number;
+export class PlaceRequests {
 
     @Prop()
-    review?: string;
-
-    @Prop()
-    images?: string[];
+    url?: string;
 
     @Prop({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'users',
     })
     user_id?: string;
+
+    @Prop({
+        enum: ['pending', 'approved', 'rejected'],
+    })
+    status: string;
 }
 
-export const PlaceReviewsSchema = SchemaFactory.createForClass(PlaceReviews);
+export const PlaceRequestsSchema = SchemaFactory.createForClass(PlaceRequests);
