@@ -20,8 +20,10 @@ import { redisStore } from 'cache-manager-redis-yet';
       isGlobal: true,
       useFactory: async () => {
         const store = await redisStore({
-          url: process.env.REDIS_URL,
+          password: process.env.REDIS_PASSWORD,
           socket: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT),
             tls: true,
             rejectUnauthorized: false,
           },
