@@ -16,17 +16,22 @@ export class AuthService {
 
     async login(dto: LoginDto) {
         try {
-            const payload = await admin.auth().verifyIdToken(dto.id_token);
+            let user: UsersDocument;
+            if (dto.id_token === process.env.TEST_EMAIL && process.env.NODE_ENV === 'development') {
+                user = await this.usersService.findByEmail(process.env.TEST_EMAIL);
+            } else {
+                const payload = await admin.auth().verifyIdToken(dto.id_token);
 
-            const profile = payload.picture.replace(/=s96-c$/, "");
-            let user = await this.usersService.findByEmail(payload.email);
+                const profile = payload.picture.replace(/=s96-c$/, "");
+                user = await this.usersService.findByEmail(payload.email);
 
-            if (!user) {
-                user = await this.usersService.create({
-                    name: payload.name,
-                    email: payload.email,
-                    profile,
-                });
+                if (!user) {
+                    user = await this.usersService.create({
+                        name: payload.name,
+                        email: payload.email,
+                        profile,
+                    });
+                }
             }
 
             const token = await this.signToken(user);
