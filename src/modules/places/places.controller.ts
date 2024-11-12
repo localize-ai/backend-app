@@ -28,7 +28,7 @@ export class PlacesController {
 
   @Get('explores')
   @CacheKey('explores-places')
-  @CacheTTL(1000 * 60 * 60 * 24)
+  @CacheTTL(60000 * 60 * 24)
   @UseInterceptors(CacheInterceptor)
   @ApiTags('places')
   async getExplores() {

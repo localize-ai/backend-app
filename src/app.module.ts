@@ -16,20 +16,17 @@ import { redisStore } from 'cache-manager-redis-yet';
         return connection;
       },
     }),
-    // CacheModule.registerAsync(RedisOptions),
-    // CacheModule.register({
-    //   isGlobal: true,
-    //   store: redisStore as unknown as CacheStore,
-    //   url: process.env.REDIS_URL,
-    // }),
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => {
-        const redisUrl = process.env.REDIS_URL;
-        const store = await redisStore();
+        const store = await redisStore({
+          socket: {
+            host: process.env.REDIS_HOST,
+            port: parseInt(process.env.REDIS_PORT),
+          }
+        });
 
         return {
-          url: redisUrl,
           store: store as unknown as CacheStore,
           ttl: 3 * 60000, // 3 minutes (milliseconds)
         };
