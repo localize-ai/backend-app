@@ -26,14 +26,7 @@ import { redisStore } from 'cache-manager-redis-yet';
       isGlobal: true,
       useFactory: async () => {
         const redisUrl = process.env.REDIS_URL;
-        const store = await redisStore({
-          socket: {
-            // tls: (redisUrl.match(/rediss:/) != null),
-            // rejectUnauthorized: false,
-            // host: process.env.REDIS_HOST,
-            // port: parseInt(process.env.REDIS_PORT),
-          }
-        });
+        const store = await redisStore();
 
         return {
           url: redisUrl,
