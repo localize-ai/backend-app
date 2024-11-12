@@ -27,6 +27,7 @@ import { redisStore } from 'cache-manager-redis-yet';
         });
 
         return {
+          url: process.env.REDIS_URL,
           store: store as unknown as CacheStore,
           ttl: 3 * 60000, // 3 minutes (milliseconds)
         };
