@@ -35,4 +35,13 @@ export class UsersService {
             { new: true },
         );
     }
+
+    async addReviewCount(id: string) {
+        return await this.model.findOneAndUpdate(
+            { _id: id },
+            {
+                $inc: { total_reviews: 1 },
+            },
+        );
+    }
 }

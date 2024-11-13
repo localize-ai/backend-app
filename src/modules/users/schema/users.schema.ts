@@ -35,6 +35,9 @@ export class Users {
     @Prop()
     profile?: string;
 
+    @Prop()
+    total_reviews?: number;
+
     created_at?: Date;
     updated_at?: Date;
 }

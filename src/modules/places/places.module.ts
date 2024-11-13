@@ -8,6 +8,7 @@ import { PlaceReviews, PlaceReviewsSchema } from './schema/place_reviews.schema'
 import { PlaceReviewsService } from './services/place-reviews.service';
 import { PlaceRequestsService } from './services/place-requests.service';
 import { PlaceRequests, PlaceRequestsSchema } from './schema/place_requests.schema';
+import { UsersModule } from '../users/users.module';
 
 @Module({
   controllers: [PlacesController],
@@ -18,6 +19,7 @@ import { PlaceRequests, PlaceRequestsSchema } from './schema/place_requests.sche
   ],
   imports: [
     HttpModule,
+    UsersModule,
     MongooseModule.forFeature([
       {
         name: Places.name,
