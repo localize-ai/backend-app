@@ -1,0 +1,1 @@
+export const EXPLORE_PLACES_REDIS_KEY = 'explore_places';

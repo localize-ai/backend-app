@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Param, Post, Query, Request, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Request, UseGuards } from '@nestjs/common';
 import { PlacesService } from './services/places.service';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { CacheInterceptor, CacheKey, CacheTTL } from '@nestjs/cache-manager';
 import { JwtAuthGuard } from '../auth/guard/jwtAuth.guard';
 import { PlaceReviewsService } from './services/place-reviews.service';
 import { CreatePlaceReviewsDto } from './dto/create.place-reviews.dto';
@@ -27,9 +26,6 @@ export class PlacesController {
   }
 
   @Get('explores')
-  @CacheKey('explores_places')
-  @CacheTTL(1000 * 60 * 60 * 24)
-  @UseInterceptors(CacheInterceptor)
   @ApiTags('places')
   async getExplores() {
     return this.placesService.getExplores();
