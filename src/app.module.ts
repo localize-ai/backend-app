@@ -4,8 +4,6 @@ import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { StoragesModule } from './modules/storages/storages.module';
 import { PlacesModule } from './modules/places/places.module';
-import { CacheModule, CacheStore } from '@nestjs/cache-manager';
-import { redisStore } from 'cache-manager-redis-yet';
 
 @Module({
   imports: [
@@ -16,37 +14,6 @@ import { redisStore } from 'cache-manager-redis-yet';
         return connection;
       },
     }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: async () => {
-        const store = await redisStore({
-          ttl: 24 * 60 * 60000,
-          pingInterval: 3000,
-          username: process.env.REDIS_USERNAME,
-          password: process.env.REDIS_PASSWORD,
-          socket: {
-            host: process.env.REDIS_HOST,
-            port: parseInt(process.env.REDIS_PORT),
-            tls: true,
-            rejectUnauthorized: false,
-            reconnectStrategy(retries, cause) {
-              console.log(`Redis connection lost. Attempt ${retries}: `, cause);
-
-              if (retries > 10) {
-                return new Error('Redis connection lost');
-              }
-              return Math.min(retries * 50, 500);
-            },
-          },
-        });
-
-        return {
-          store: store as unknown as CacheStore,
-          ttl: 24 * 60 * 60000,
-        };
-      },
-    }),
-
     UsersModule,
     AuthModule,
     StoragesModule,
