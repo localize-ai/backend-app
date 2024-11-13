@@ -44,4 +44,12 @@ export class UsersService {
             },
         );
     }
+
+    async isUsernameExists(username: string): Promise<boolean> {
+        const user = await this.model.findOne({
+            username:
+                username,
+        });
+        return !!user;
+    }
 }
